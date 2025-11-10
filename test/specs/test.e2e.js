@@ -1,4 +1,3 @@
-import { expect } from '@wdio/globals'
 import LoginPage from '../pageobjects/login.page.js'
 import SecurePage from '../pageobjects/secure.page.js'
 
@@ -10,14 +9,9 @@ describe('Login and Burger Menu Test', () => {
         await LoginPage.login('standard_user', 'secret_sauce');
         await browser.url('https://www.saucedemo.com/inventory.html')
     });
-    
-    it('should login with valid credentials', async () => {
-    await expect(SecurePage.productsContainer).toBeDisplayed();
-    });
 
 //Burger Menu
     it('Should open the burger menu from inventory page', async () => {
-        await expect(SecurePage.productsContainer).toBeDisplayed();
         //Open Menu
         await SecurePage.openBurgerMenu();
     });
@@ -30,9 +24,8 @@ describe('Login and Burger Menu Test', () => {
     });
 
 //About URL
-    it('Should check that the "About" URL works without navigating to it', async () => {
-        await SecurePage.burgerMenuVisible();
-        await SecurePage.aboutLinkHref();
+    it('Should verify the About link is clickable and correct URL', async () => {
+        await SecurePage.verifyAbout();
     }); 
 
 //Logout
@@ -50,10 +43,21 @@ describe('Login and Burger Menu Test', () => {
 
 //Shopping Cart Test
 describe('Shopping Cart Test', () => {
-    it('Should select random amount of items, add them to, cart, and then remove all', async () => {
-        const itemsArray = await SecurePage.addRandomItemsandNames();
+    it('Should add an item using the parameter, go to cart, remove it, and continue shopping', async () => {
+       const allNames = [
+        'sauce-labs-backpack',
+        'sauce-labs-bike-light',
+        'sauce-labs-bolt-t-shirt',
+        'sauce-labs-fleece-jacket',
+        'sauce-labs-onesie',
+        'test-allthethings()-t-shirt-(red)'
+       ]
+       const randomIndex = Math.floor(Math.random() * allNames.length);
+       const itemName = allNames[randomIndex];
 
-        await SecurePage.viewCart();
-        await SecurePage.allRemoveItemButtons();
+       await SecurePage.addSpecificItem(itemName);
+       await SecurePage.viewCart();
+       await SecurePage.allRemoveItemButtons();
+       await SecurePage.continueShop();
     });
 });

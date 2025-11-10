@@ -1,7 +1,6 @@
 import { $ } from '@wdio/globals'
 import Page from './page.js';
 import { expect } from '@wdio/globals'
-import LoginPage from '../pageobjects/login.page.js'
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -68,8 +67,17 @@ class SecurePage extends Page {
     }
 
     //About link
-    async aboutLinkHref() {
+    async verifyAbout() {
+        await this.openBurgerMenu();
+        await expect(this.aboutLink).toBeDisplayed();
+        await expect(this.aboutLink).toBeEnabled();
         await expect(this.aboutLink).toHaveAttr('href', 'https://saucelabs.com/');
+        
+    }
+
+    async returnInventory() {
+        await browser .back();
+        await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory.html');
     }
 
     //Logout
@@ -97,35 +105,22 @@ class SecurePage extends Page {
     get allRemoveButtons() {
         return $$('button[data-test^="remove-"]');
     }
-    //Add the items
-    async addRandomItemsandNames() {
-        const buttons = await this.allAddButtons;
-        const maxItem = buttons.length;
-
-        const itemCount = Math.floor(Math.random() * (maxItem - 1)) + 2;
-
-        const addNames = [];
-
-        for (let i = 0; i < itemCount; i++) {
-            const button = buttons[i];
-
-            const dataTestAttr = await button.getAttribute('data-test');
-
-            const name = dataTestAttr.replace('add-to-cart-', '');
-
-            await button.click();
-            addNames.push(name);
-        }
-
-        await expect(this.cartBadge).toHaveText(addNames.length.toString());
-        return addNames;
+    get continueShopBtn() {
+        return $('#continue-shopping');
     }
+    //Single Item
+    async addSpecificItem(name) {
+        const selector = `button[data-test="add-to-cart-${name}"]`;
+        const button = await $(selector);
+        await button.click();
+        await expect(this.cartBadge).toHaveText('1');
+    }
+    
     //View Cart
     async viewCart () {
         await this.cartIcon.click();
         await expect(browser).toHaveUrl('https://www.saucedemo.com/cart.html');
     }
-
     //Remove Items
     async allRemoveItemButtons() {
         let removeButtons = await this.allRemoveButtons;
@@ -137,6 +132,11 @@ class SecurePage extends Page {
 
         await expect(this.cartBadge).not.toBeDisplayed();
         await expect(browser).toHaveUrl('https://www.saucedemo.com/cart.html')
+    }
+    //Continue Shopping
+    async continueShop() {
+        await this.continueShopBtn.click();
+        await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory.html');
     }
  
 };
