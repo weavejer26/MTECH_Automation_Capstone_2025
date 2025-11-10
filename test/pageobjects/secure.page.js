@@ -108,6 +108,12 @@ class SecurePage extends Page {
     get continueShopBtn() {
         return $('#continue-shopping');
     }
+    get checkoutBtn() {
+        return $('#checkout');
+    }
+    get cancelBtn() {
+        return $('#cancel');
+    }
     //Single Item
     async addSpecificItem(name) {
         const selector = `button[data-test="add-to-cart-${name}"]`;
@@ -138,7 +144,16 @@ class SecurePage extends Page {
         await this.continueShopBtn.click();
         await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory.html');
     }
- 
+    //Checkout
+    async goCheckout() {
+        await this.checkoutBtn.click();
+        await expect(browser).toHaveUrl('https://www.saucedemo.com/checkout-step-one.html')
+    }
+    //Cancel
+    async cancelCheck() {
+        await this.cancelBtn.click();
+        await expect(browser).toHaveUrl('https://www.saucedemo.com/cart.html')
+    }
 };
 
 export default new SecurePage();

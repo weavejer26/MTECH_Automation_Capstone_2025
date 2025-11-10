@@ -43,7 +43,7 @@ describe('Login and Burger Menu Test', () => {
 
 //Shopping Cart Test
 describe('Shopping Cart Test', () => {
-    it('Should add an item using the parameter, go to cart, remove it, and continue shopping', async () => {
+    it('Should add an item using the parameter, go to cart, go to checkout then cancel, remove item, and continue shopping', async () => {
        const allNames = [
         'sauce-labs-backpack',
         'sauce-labs-bike-light',
@@ -57,6 +57,8 @@ describe('Shopping Cart Test', () => {
 
        await SecurePage.addSpecificItem(itemName);
        await SecurePage.viewCart();
+       await SecurePage.goCheckout();
+       await SecurePage.cancelCheck();
        await SecurePage.allRemoveItemButtons();
        await SecurePage.continueShop();
     });
