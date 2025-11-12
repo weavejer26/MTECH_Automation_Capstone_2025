@@ -41,7 +41,6 @@ class SecurePage extends Page {
     const menuOpen = await this.menuSidebar.isDisplayed();
 
     if (menuOpen) {
-        console.log('Burger Menu already open, skip click');
         return;
     }
 
