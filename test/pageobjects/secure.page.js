@@ -41,6 +41,7 @@ class SecurePage extends Page {
     const menuOpen = await this.menuSidebar.isDisplayed();
 
     if (menuOpen) {
+
         return;
     }
 
@@ -113,12 +114,29 @@ class SecurePage extends Page {
     get cancelBtn() {
         return $('#cancel');
     }
+    get allProductNames() { 
+       return [ 
+        'sauce-labs-backpack',
+        'sauce-labs-bike-light',
+        'sauce-labs-bolt-t-shirt',
+        'sauce-labs-fleece-jacket',
+        'sauce-labs-onesie',
+        'test-allthethings() t-shirt (red)'
+       ]
+    }
     //Single Item
     async addSpecificItem(name) {
         const selector = `button[data-test="add-to-cart-${name}"]`;
         const button = await $(selector);
         await button.click();
         await expect(this.cartBadge).toHaveText('1');
+    }
+
+    async addRandomItem() {
+        const randomIndex = Math.floor(Math.random() * this.allProductNames.length);
+        const itemName = this.allProductNames[randomIndex];
+        await this.addSpecificItem(itemName);
+        return itemName;
     }
     
     //View Cart
