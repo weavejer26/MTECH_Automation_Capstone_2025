@@ -1,5 +1,6 @@
 import SideSelectors from '../pageobjects/SideMenuSelectors.js'
 describe('Automated SSE Capstone Test (Side Menus)', () => {
+
 //Side Menus Test    
     it('Should Open Each Menu Item When Clicked On', async () => {
         await SideSelectors.open();
