@@ -2,19 +2,7 @@ import { $ } from '@wdio/globals'
 import Website from './website.js';
 import { expect } from '@wdio/globals'
 
-class Selectors extends Website {
-    //SSE Logo Button
-    get logoButton () {
-        return $('#HeaderLogoWrapper');
-    }
-
-    async logoLink () {
-        await this.solderingProduct.waitForDisplayed();
-        await this.solderingProduct.click();
-        await this.logoButton.isDisplayed();
-        await this.logoButton.click();
-    }
-
+class SideSelectors extends Website {
 //Side Menus
     get allProductsMenu () {
         return $('a[href="/collections"]');
@@ -38,12 +26,17 @@ class Selectors extends Website {
         }
     
     get ebayPage () {
-            return $('a[href="https://www.ebay.com/str/standardsupplyelectronics"]')
+        return $('a[href="https://www.ebay.com/str/standardsupplyelectronics"]')
         }
+
+    get ebayLogo () {
+        return $('a[href="https://www.ebay.com"]')
+    }
     
     async ebayLink () {
         await this.ebayPage.waitForDisplayed();
         await this.ebayPage.click();
+        await this.ebayLogo.waitForDisplayed();
         await browser.back();
     }
 
@@ -83,17 +76,6 @@ class Selectors extends Website {
         await this.homePage.waitForDisplayed();
         await this.homePage.click();
     }
-
-//Featured Products
-    get solderingProduct () {
-        return $('a[href="/collections/soldering-irons"]');
-    }
-
-    async solderingProductLink () {
-        await this.solderingProduct.waitForDisplayed();
-        await this.solderingProduct.click();
-        await this.homeLink();
-    }
 };
 
-export default new Selectors();
+export default new SideSelectors();
