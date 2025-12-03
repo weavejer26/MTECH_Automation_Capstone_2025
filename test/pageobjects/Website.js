@@ -14,3 +14,5 @@ export default class Website {
     }
 
 }
+
+//npx wdio run ./wdio.conf.js --spec test/specs/TestName.js

@@ -1,17 +1,25 @@
-import { $ } from '@wdio/globals'
+import { $, expect } from '@wdio/globals'
 import Website from './website.js';
 
 class SearchSelectors extends Website {
     get searchInputBar() {
-        return $('#search-bar__input')
+        return $('input[type="search"]')
+    }
+
+    get searchQuery () {
+        return $('input[name="q"]')
+    }
+
+    async lookUp(searchProduct) {
+        await this.searchQuery.waitForDisplayed();
+        await this.searchInputBar.click();
+        await this.searchQuery.setValue(searchProduct)
+        await this.searchIcon.click();
+        await expect(browser).toHaveUrl(`https://standardsupply.myshopify.com/search?q=${searchProduct}`)
     }
 
     get searchIcon () {
-        return $('#search-bar__submit')
-    }
-
-    get resultsHeading () {
-        return $('h2.small--text-center')
+        return $('button[type="submit"]')
     }
 
 }
